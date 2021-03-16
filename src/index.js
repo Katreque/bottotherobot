@@ -1,9 +1,9 @@
 require('dotenv').config();
 
 const Discord = require('discord.js');
-const client = new Discord.Client();
-
 const { checkDiscordInfo } = require('./initHandler');
+
+const client = new Discord.Client();
 
 checkDiscordInfo(process.env.DISCORD_TOKEN, process.env.DISCORD_ID);
 
