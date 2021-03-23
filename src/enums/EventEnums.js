@@ -1,6 +1,6 @@
 const events = {
-    "READY":"ready",
-    "MESSAGE":"message"
+    'READY':'ready',
+    'MESSAGE':'message'
 };
 
 const EventsEnum = Object.freeze(events);
