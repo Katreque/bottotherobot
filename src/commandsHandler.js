@@ -4,7 +4,7 @@ module.exports = {
     handleCommand(message, BOT_PREFIX) {
         const commandArray = message.content.split(' ');
         const isAdmin = message.member.hasPermission('ADMINISTRATOR');
-        if(message.toString()[0] === BOT_PREFIX && isAdmin) {
+        if(message.content.toString()[0] === BOT_PREFIX && isAdmin) {
             const command = commandArray[0].replace(BOT_PREFIX,'');
             switch(command) {
                 case CommandsEnum.HELLO : 
@@ -15,6 +15,8 @@ module.exports = {
                     message.channel.send('Command not recognized.');
                 break;
             }
+        } else if(!isAdmin) {
+            message.channel.send('You must be an Admin to perform this command.');
         } 
     }
 };
