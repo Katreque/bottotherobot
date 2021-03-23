@@ -1,7 +1,7 @@
 require('dotenv').config();
 
-const Events = require("./enums/EventEnums");
 const Discord = require('discord.js');
+const Events = require('./enums/EventEnums');
 const { checkDiscordInfo } = require('./initHandler');
 const { checkPrefix } = require('./prefixHandler');
 const { handleCommand } = require('./commandsHandler');
@@ -16,7 +16,7 @@ client.on(Events.READY, () => {
 });
 
 client.on(Events.MESSAGE, (message) => {
-	const prefix = process.env.BOT_PREFIX; 
+	const prefix = process.env.BOT_PREFIX;
 	checkPrefix(prefix);
 	handleCommand(message, prefix);
 });

@@ -9,6 +9,6 @@
     },
     "rules": {
         "no-tabs": ["error", { "allowIndentationTabs": true }],
-		"indent": ["error", "tab"]
+		"indent": ["error", "tab", {"SwitchCase": 1}]
     }
 }
