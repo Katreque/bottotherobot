@@ -4,19 +4,8 @@ const TemplateLangEnum = require('./enums/TemplateLangEnums');
 
 const DEFAULT_TEMPLATE_JSON = require('./templates/default.json');
 
-module.exports = {
-	async executeTemplate(templateName, templateSize, templateLang, message) {
-		const SELECTED_TEMPLATE = selectedTemplate(templateName);
-		const SELECTED_SIZE = selectedSize(templateSize);
-		const SELECTED_LANG = selectedLang(templateLang);
-
-		//await createRoles(SELECTED_TEMPLATE.roles, SELECTED_LANG, message);
-		await createChannels(SELECTED_TEMPLATE.channels, SELECTED_SIZE, SELECTED_LANG, message);
-	},
-};
-
 function selectedTemplate(templateName) {
-	const tname = templateName || "";
+	const tname = templateName || '';
 
 	switch (tname.toLowerCase()) {
 		case TemplateEnum.DEFAULT:
@@ -28,7 +17,7 @@ function selectedTemplate(templateName) {
 }
 
 function selectedSize(templateSize) {
-	const tsize = templateSize || "";
+	const tsize = templateSize || '';
 
 	switch (tsize.toLowerCase()) {
 		case TemplateSizeEnum.SMALL:
@@ -42,14 +31,14 @@ function selectedSize(templateSize) {
 
 		case TemplateSizeEnum.GIANT:
 			return 4;
-	
+
 		default:
 			return TemplateSizeEnum.SMALL;
 	}
 }
 
 function selectedLang(templateLang) {
-	const tlang = templateLang || "";
+	const tlang = templateLang || '';
 
 	switch (tlang.toUpperCase()) {
 		case TemplateLangEnum.PT_BR:
@@ -57,7 +46,7 @@ function selectedLang(templateLang) {
 
 		case TemplateLangEnum.EN:
 			return TemplateLangEnum.EN;
-	
+
 		default:
 			return TemplateLangEnum.EN;
 	}
@@ -73,8 +62,8 @@ async function createRoles(roles, lang, message) {
 					position: role.position,
 					permissions: role.permissions,
 					mentionable: role.mentionable,
-					hoist: role.hoist
-				}
+					hoist: role.hoist,
+				},
 			});
 		} catch (error) {
 			console.log(error);
@@ -83,15 +72,42 @@ async function createRoles(roles, lang, message) {
 	});
 }
 
-async function createChannels(channels, size, lang, message, parent, stackCount) {
-	let internalSC = stackCount || 0;
+async function adjustChannelObject(channel, lang, guild, parent) {
+	const channelObj = {};
 
-	for (let i = 0; i < channels.length; i++) {
+	channelObj.data = {
+		type: channel.type,
+		permissionOverwrites: [],
+		parent,
+	};
+
+	// Get fresh info about the roles created before.
+	const freshRoles = await guild.roles.fetch();
+
+	if (channel.permissionOverwrites.length) {
+		channel.permissionOverwrites.forEach((po) => {
+			const roleName = freshRoles.cache.find((role) => role.name === po.name[lang]);
+			channelObj.data.permissionOverwrites.push({
+				id: roleName,
+				allow: po.allow,
+				deny: po.deny,
+			});
+		});
+	}
+
+	channelObj.child = channel.child;
+	return channelObj;
+}
+
+async function createChannels(channels, size, lang, message, parent, stackCount) {
+	const internalSC = stackCount || 0;
+
+	for (let i = 0; i < channels.length; i += 1) {
 		try {
 			const channelConfig = await adjustChannelObject(channels[i], lang, message.guild, parent);
 			const channelCreated = await message.guild.channels.create(
 				channels[i].name[lang],
-				channelConfig.data
+				channelConfig.data,
 			);
 
 			if (channelConfig.child) {
@@ -99,7 +115,7 @@ async function createChannels(channels, size, lang, message, parent, stackCount)
 			}
 
 			if (channels[i].scalable) {
-				let SC = internalSC + 1;
+				const SC = internalSC + 1;
 
 				if (SC <= size) {
 					await createChannels(channels, size, lang, message, null, SC);
@@ -112,29 +128,13 @@ async function createChannels(channels, size, lang, message, parent, stackCount)
 	}
 }
 
-async function adjustChannelObject(channel, lang, guild, parent) {
-	const channelObj = {};
+module.exports = {
+	async executeTemplate(templateName, templateSize, templateLang, message) {
+		const SELECTED_TEMPLATE = selectedTemplate(templateName);
+		const SELECTED_SIZE = selectedSize(templateSize);
+		const SELECTED_LANG = selectedLang(templateLang);
 
-	channelObj.data = {
-		type: channel.type,
-		permissionOverwrites: [],
-		parent: parent
-	}
-
-	// Get fresh info about the roles created before.
-	const freshRoles = await guild.roles.fetch();
-
-	if (channel.permissionOverwrites.length) {
-		channel.permissionOverwrites.forEach((po) => {
-			let roleName = freshRoles.cache.find(role => role.name === po.name[lang]);
-			channelObj.data.permissionOverwrites.push({
-				id: roleName,
-				allow: po.allow,
-				deny: po.deny
-			})
-		});
-	}
-
-	channelObj.child = channel.child;
-	return channelObj;
-}
+		await createRoles(SELECTED_TEMPLATE.roles, SELECTED_LANG, message);
+		await createChannels(SELECTED_TEMPLATE.channels, SELECTED_SIZE, SELECTED_LANG, message);
+	},
+};
