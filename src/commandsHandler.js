@@ -18,7 +18,7 @@ module.exports = {
 					const templateSize = args[1];
 					const templateLang = args[2];
 
-					TemplateHandler.executeTemplate(templateName, templateSize, templateLang);
+					TemplateHandler.executeTemplate(templateName, templateSize, templateLang, message);
 					break;
 				}
 
