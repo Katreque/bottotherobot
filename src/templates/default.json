@@ -27,7 +27,6 @@
     ],
     "channels": [
         {
-            "id": "0",
             "name": {
 				"PT_BR": "Informações",
 				"EN": "Info"
@@ -41,11 +40,18 @@
 					},
 					"allow": [],
 					"deny": ["SEND_MESSAGES"]
+				},
+				{
+					"name": {
+						"PT_BR": "Moderação",
+						"EN": "Mods"
+					},
+					"allow": ["SEND_MESSAGES"],
+					"deny": []
 				}
 			],
             "child": [
                 {
-                    "id": "0.1",
                     "name": {
 						"PT_BR": "bem-vindo",
 						"EN": "welcome"
@@ -54,7 +60,6 @@
 					"permissionOverwrites": []
                 },
                 {
-                    "id": "0.2",
                     "name": {
 						"PT_BR": "regras",
 						"EN": "rules"
@@ -63,7 +68,6 @@
 					"permissionOverwrites": []
                 },
                 {
-                    "id": "0.3",
                     "name": {
 						"PT_BR": "ajuda",
 						"EN": "need-help"
@@ -72,7 +76,6 @@
 					"permissionOverwrites": []
                 },
                 {
-                    "id": "0.4",
                     "name": {
 						"PT_BR": "anúncios",
 						"EN": "announcements"
@@ -83,7 +86,6 @@
             ]
         },
         {
-            "id": "1",
             "name": {
 				"PT_BR": "Lobby-1",
 				"EN": "Lobby-1"
@@ -93,7 +95,6 @@
 			"permissionOverwrites": [],
             "child": [
                 {
-                    "id": "1.1",
                     "name": {
 						"PT_BR": "nome-temporario-1",
 						"EN": "temporary-name-1"
@@ -102,7 +103,6 @@
 					"permissionOverwrites": []
                 },
                 {
-                    "id": "1.2",
                     "name": {
 						"PT_BR": "nome-temporario-2",
 						"EN": "temporary-name-2"
@@ -111,7 +111,6 @@
 					"permissionOverwrites": []
                 },
                 {
-                    "id": "1.3",
                     "name": {
 						"PT_BR": "nome-temporario-3",
 						"EN": "temporary-name-3"
@@ -120,15 +119,16 @@
 					"permissionOverwrites": []
                 },
                 {
-                    "id": "1.4",
-                    "name": "nome-temporario-audio",
+                    "name": {
+						"PT_BR": "nome-temporario-audio",
+						"EN": "temporary-name-audio"
+					},
                     "type": "voice",
 					"permissionOverwrites": []
                 }
             ]
         },
         {
-            "id": "2",
             "name": {
 				"PT_BR": "Moderação",
 				"EN": "Moderation"
@@ -142,11 +142,18 @@
 					},
 					"allow": [],
 					"deny": ["VIEW_CHANNEL"]
+				},
+				{
+					"name": {
+						"PT_BR": "Moderação",
+						"EN": "Mods"
+					},
+					"allow": ["VIEW_CHANNEL"],
+					"deny": []
 				}
 			],
             "child": [
                 {
-                    "id": "2.1",
                     "name": {
 						"PT_BR": "usuarios-entraram",
 						"EN": "users-joined"
@@ -155,7 +162,6 @@
 					"permissionOverwrites": []
                 },
                 {
-                    "id": "2.2",
                     "name": {
 						"PT_BR": "usuarios-sairam",
 						"EN": "users-left"
@@ -164,16 +170,14 @@
 					"permissionOverwrites": []
                 },
                 {
-                    "id": "2.3",
                     "name": {
 						"PT_BR": "chat-moderadores",
-						"EN": "chat-moderators"
+						"EN": "chat-mods"
 					},
                     "type": "text",
 					"permissionOverwrites": []
                 },
                 {
-                    "id": "2.4",
                     "name": {
 						"PT_BR": "sala-de-reuniões",
 						"EN": "meeting-room"

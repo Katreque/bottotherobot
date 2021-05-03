@@ -81,18 +81,23 @@ async function adjustChannelObject(channel, lang, guild, parent) {
 		parent,
 	};
 
-	// Get fresh info about the roles created before.
-	const freshRoles = await guild.roles.fetch();
-
-	if (channel.permissionOverwrites.length) {
-		channel.permissionOverwrites.forEach((po) => {
-			const roleName = freshRoles.cache.find((role) => role.name === po.name[lang]);
-			channelObj.data.permissionOverwrites.push({
-				id: roleName,
-				allow: po.allow,
-				deny: po.deny,
+	try {
+		// Get fresh info about the roles created before.
+		const freshRoles = await guild.roles.fetch();
+	
+		if (channel.permissionOverwrites.length) {
+			channel.permissionOverwrites.forEach((po) => {
+				const roleName = freshRoles.cache.find((role) => role.name === po.name[lang]);
+				channelObj.data.permissionOverwrites.push({
+					id: roleName,
+					allow: po.allow,
+					deny: po.deny,
+				});
 			});
-		});
+		}
+	} catch (error) {
+		console.log(error);
+		message.channel.send('Discord API Error on getting roles.');
 	}
 
 	channelObj.child = channel.child;
@@ -103,8 +108,8 @@ async function createChannels(channels, size, lang, message, parent, stackCount)
 	const internalSC = stackCount || 0;
 
 	for (let i = 0; i < channels.length; i += 1) {
+		const channelConfig = await adjustChannelObject(channels[i], lang, message.guild, parent);
 		try {
-			const channelConfig = await adjustChannelObject(channels[i], lang, message.guild, parent);
 			const channelCreated = await message.guild.channels.create(
 				channels[i].name[lang],
 				channelConfig.data,
@@ -117,8 +122,8 @@ async function createChannels(channels, size, lang, message, parent, stackCount)
 			if (channels[i].scalable) {
 				const SC = internalSC + 1;
 
-				if (SC <= size) {
-					await createChannels(channels, size, lang, message, null, SC);
+				if (SC < size) {
+					await createChannels([channels[i]], size, lang, message, null, SC);
 				}
 			}
 		} catch (error) {
