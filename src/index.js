@@ -15,10 +15,10 @@ client.on(Events.READY, () => {
 	console.log(`Your Discord bot invite: https://discord.com/oauth2/authorize?client_id=${process.env.DISCORD_ID}&scope=bot&permissions=8`);
 });
 
-client.on(Events.MESSAGE, async (message) => {
+client.on(Events.MESSAGE, (message) => {
 	const prefix = process.env.BOT_PREFIX;
 	checkPrefix(prefix);
-	await handleCommand(message, prefix);
+	handleCommand(message, prefix);
 });
 
 client.login(process.env.DISCORD_TOKEN);

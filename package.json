@@ -15,7 +15,7 @@
 	"scripts": {
 		"start": "node src/index.js",
 		"dev": "nodemon src/index.js",
-		"test": "jest --collectCoverage",
+		"test": "jest --collectCoverage --silent",
 		"lint": "eslint src",
 		"uglify": "uglifyjs-folder src -eo build",
 		"build": "npm run test && npm run lint && npm run uglify"

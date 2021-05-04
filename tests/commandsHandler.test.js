@@ -71,5 +71,5 @@ test('Template command should call the right handler.', () => {
 
 	const executeTemplateSpy = jest.spyOn(templateHandler, 'executeTemplate');
     handleCommand(message, botPrefix);
-    expect(executeTemplateSpy).toHaveBeenCalledWith('kappa', 'fon', 'trab');
+    expect(executeTemplateSpy).toHaveBeenCalledWith('kappa', 'fon', 'trab', message);
 });
