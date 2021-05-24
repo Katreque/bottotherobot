@@ -18,9 +18,23 @@ module.exports = {
 					const templateSize = args[1];
 					const templateLang = args[2];
 
-					TemplateHandler.executeTemplate(templateName, templateSize, templateLang);
+					TemplateHandler.executeTemplate(templateName, templateSize, templateLang, message);
 					break;
 				}
+
+				// Only for internal testing purposes
+				/*
+				case CommandsEnum.RESET_GUILD:
+					message.guild.roles.cache.each((role) => {
+						if (role.name === 'Member' || role.name === 'Membro') role.delete();
+					});
+					message.guild.roles.cache.each((role) => {
+						if (role.name === 'Mods' || role.name === 'Moderação') role.delete();
+					});
+					message.guild.channels.cache.each((channel) => channel.delete());
+					message.guild.channels.create('Chronobreak');
+					break;
+				*/
 
 				default:
 					message.channel.send('Command not recognized.');

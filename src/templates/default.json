@@ -1,0 +1,197 @@
+{
+    "id": 1,
+    "name": "Default Template",
+	"roles": [
+        {
+            "name": {
+				"PT_BR": "Moderação",
+				"EN": "Mods"
+			},
+			"color": "#0985c5",
+			"position": 1,
+            "permissions": 4260888183,
+			"hoist": true,
+			"mentionable": false
+        },
+        {
+            "name": {
+				"PT_BR": "Membro",
+				"EN": "Member"
+			},
+			"color": "#1e8f36",
+			"position": 0,
+            "permissions": 70372929,
+			"hoist": false,
+			"mentionable": true
+        }
+    ],
+    "channels": [
+        {
+            "name": {
+				"PT_BR": "Informações",
+				"EN": "Info"
+			},
+            "type": "category",
+            "permissionOverwrites": [
+				{
+					"name": {
+						"PT_BR": "Membro",
+						"EN": "Member"
+					},
+					"allow": [],
+					"deny": ["SEND_MESSAGES"]
+				},
+				{
+					"name": {
+						"PT_BR": "Moderação",
+						"EN": "Mods"
+					},
+					"allow": ["SEND_MESSAGES"],
+					"deny": []
+				}
+			],
+            "child": [
+                {
+                    "name": {
+						"PT_BR": "bem-vindo",
+						"EN": "welcome"
+					},
+                    "type": "text",
+					"permissionOverwrites": []
+                },
+                {
+                    "name": {
+						"PT_BR": "regras",
+						"EN": "rules"
+					},
+                    "type": "text",
+					"permissionOverwrites": []
+                },
+                {
+                    "name": {
+						"PT_BR": "ajuda",
+						"EN": "need-help"
+					},
+                    "type": "text",
+					"permissionOverwrites": []
+                },
+                {
+                    "name": {
+						"PT_BR": "anúncios",
+						"EN": "announcements"
+					},
+                    "type": "text",
+					"permissionOverwrites": []
+                }
+            ]
+        },
+        {
+            "name": {
+				"PT_BR": "Lobby-1",
+				"EN": "Lobby-1"
+			},
+            "type": "category",
+            "scalable": true,
+			"permissionOverwrites": [],
+            "child": [
+                {
+                    "name": {
+						"PT_BR": "nome-temporario-1",
+						"EN": "temporary-name-1"
+					},
+                    "type": "text",
+					"permissionOverwrites": []
+                },
+                {
+                    "name": {
+						"PT_BR": "nome-temporario-2",
+						"EN": "temporary-name-2"
+					},
+                    "type": "text",
+					"permissionOverwrites": []
+                },
+                {
+                    "name": {
+						"PT_BR": "nome-temporario-3",
+						"EN": "temporary-name-3"
+					},
+                    "type": "text",
+					"permissionOverwrites": []
+                },
+                {
+                    "name": {
+						"PT_BR": "nome-temporario-audio",
+						"EN": "temporary-name-audio"
+					},
+                    "type": "voice",
+					"permissionOverwrites": []
+                }
+            ]
+        },
+        {
+            "name": {
+				"PT_BR": "Moderação",
+				"EN": "Moderation"
+			},
+            "type": "category",
+			"permissionOverwrites": [
+				{
+					"name": {
+						"PT_BR": "Membro",
+						"EN": "Member"
+					},
+					"allow": [],
+					"deny": ["VIEW_CHANNEL"]
+				},
+				{
+					"name": {
+						"PT_BR": "Moderação",
+						"EN": "Mods"
+					},
+					"allow": ["VIEW_CHANNEL"],
+					"deny": []
+				}
+			],
+            "child": [
+                {
+                    "name": {
+						"PT_BR": "usuarios-entraram",
+						"EN": "users-joined"
+					},
+                    "type": "text",
+					"permissionOverwrites": []
+                },
+                {
+                    "name": {
+						"PT_BR": "usuarios-sairam",
+						"EN": "users-left"
+					},
+                    "type": "text",
+					"permissionOverwrites": []
+                },
+                {
+                    "name": {
+						"PT_BR": "chat-moderadores",
+						"EN": "chat-mods"
+					},
+                    "type": "text",
+					"permissionOverwrites": []
+                },
+                {
+                    "name": {
+						"PT_BR": "sala-de-reuniões",
+						"EN": "meeting-room"
+					},
+                    "type": "voice",
+					"permissionOverwrites": []
+                }
+            ]
+        }
+    ],
+    "modules": [
+        {
+            "id": 5,
+            "config": {}
+        }
+    ]
+}

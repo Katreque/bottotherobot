@@ -1,6 +1,6 @@
 const templateLang = {
-	PT_BR: 'portuguese-br',
-	EN: 'english',
+	PT_BR: 'PT_BR',
+	EN: 'EN',
 };
 
 const TemplateLangEnum = Object.freeze(templateLang);
