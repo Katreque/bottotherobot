@@ -23,7 +23,7 @@ module.exports = {
 				}
 
 				// Only for internal testing purposes
-				/*
+				
 				case CommandsEnum.RESET_GUILD:
 					message.guild.roles.cache.each((role) => {
 						if (role.name === 'Member' || role.name === 'Membro') role.delete();
@@ -34,7 +34,7 @@ module.exports = {
 					message.guild.channels.cache.each((channel) => channel.delete());
 					message.guild.channels.create('Chronobreak');
 					break;
-				*/
+				
 
 				default:
 					message.channel.send('Command not recognized.');

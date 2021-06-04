@@ -159,7 +159,8 @@
 						"EN": "users-joined"
 					},
                     "type": "text",
-					"permissionOverwrites": []
+					"permissionOverwrites": [],
+					"userJoinedChannel": true
                 },
                 {
                     "name": {
@@ -167,7 +168,8 @@
 						"EN": "users-left"
 					},
                     "type": "text",
-					"permissionOverwrites": []
+					"permissionOverwrites": [],
+					"userLeftChannel": true
                 },
                 {
                     "name": {

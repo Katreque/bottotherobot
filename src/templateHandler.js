@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 const TemplateEnum = require('./enums/TemplateEnums');
 const TemplateSizeEnum = require('./enums/TemplateSizeEnums');
 const TemplateLangEnum = require('./enums/TemplateLangEnums');
@@ -115,6 +117,18 @@ module.exports = {
 					channels[i].name[lang],
 					channelConfig.data,
 				);
+
+				if (channels[i].userJoinedChannel) {
+					const CONFIG = require('../config.json');
+					CONFIG.user_joined_channel = channelCreated.id;
+					fs.writeFile('config.json', JSON.stringify(CONFIG), () => {});
+				}
+
+				if (channels[i].userLeftChannel) {
+					const CONFIG = require('../config.json');
+					CONFIG.user_left_channel = channelCreated.id;
+					fs.writeFile('config.json', JSON.stringify(CONFIG), () => {});
+				}
 
 				if (channelConfig.child) {
 					await this.createChannels(channelConfig.child, size, lang, message, channelCreated);
