@@ -1,6 +1,6 @@
 const events = {
 	READY: 'ready',
-	MESSAGE: 'message',
+	INTERACTION: 'interactionCreate',
 	MEMBER_JOINED: 'guildMemberAdd',
 	MEMBER_LEFT: 'guildMemberRemove',
 };

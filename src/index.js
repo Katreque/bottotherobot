@@ -1,27 +1,49 @@
 require('dotenv').config();
 
-const Discord = require('discord.js');
+const fs = require('fs');
+const path = require('path');
+
+const { Client, Collection, Intents } = require('discord.js');
+
 const Events = require('./enums/EventEnums');
 const { checkDiscordInfo, checkIfExistsConfigFile } = require('./initHandler');
 const { getTranslatedString } = require('./langHandler');
 const { checkPrefix } = require('./prefixHandler');
-const { handleCommand } = require('./commandsHandler');
+const { commandHandler } = require('./commandsHandler');
 
-const client = new Discord.Client();
-const USER_LANG = process.env.LANGUAGE;
-
+// Initial Verifications
 checkIfExistsConfigFile();
 checkDiscordInfo(process.env.DISCORD_TOKEN, process.env.DISCORD_ID);
 
-client.on(Events.READY, () => {
+const USER_LANG = process.env.LANGUAGE;
+const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+client.commands = new Collection();
+
+const commandFiles = fs.readdirSync(path.resolve(__dirname, './commands')).filter(file => file.endsWith('.js'));
+for (const file of commandFiles) {
+	const command = require(`${path.resolve(__dirname, './commands')}/${file}`);
+	client.commands.set(command.data.name, command);
+}
+
+// Discord Events
+client.once(Events.READY, () => {
 	console.log(`${getTranslatedString('BOT_ACTIVE', USER_LANG, {username: client.user.username})}`);
-	console.log(`${getTranslatedString('DISCORD_BOT_INVITE', USER_LANG)} https://discord.com/oauth2/authorize?client_id=${process.env.DISCORD_ID}&scope=bot&permissions=8`);
+	console.log(`${getTranslatedString('DISCORD_BOT_INVITE', USER_LANG)} https://discord.com/api/oauth2/authorize?client_id=${process.env.DISCORD_ID}&permissions=8&scope=bot%20applications.commands`);
 });
 
-client.on(Events.MESSAGE, (message) => {
-	const prefix = process.env.BOT_PREFIX;
-	checkPrefix(prefix);
-	handleCommand(message, prefix);
+client.on(Events.INTERACTION, async (interaction) => {
+	if (!interaction.isCommand()) return;
+
+	const command = client.commands.get(interaction.commandName);
+
+	if (!command) return;
+
+	try {
+		await command.execute(interaction);
+	} catch (error) {
+		console.error(error);
+		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+	}
 });
 
 client.on(Events.MEMBER_JOINED, async (member) => {

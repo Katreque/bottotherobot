@@ -1,8 +1,8 @@
 const CommandsEnum = require('./enums/CommandsEnums');
-const TemplateHandler = require('./templateHandler');
+const TemplateHandler = require('./commands/templateHandler');
 
 module.exports = {
-	handleCommand(message, BOT_PREFIX) {
+	commandHandler(message, BOT_PREFIX) {
 		const isAdmin = message.member.hasPermission('ADMINISTRATOR');
 		if (message.content.toString()[0] === BOT_PREFIX && isAdmin) {
 			const args = message.content.slice(BOT_PREFIX.length).trim().split(/ +/);

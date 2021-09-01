@@ -3,187 +3,122 @@
     "name": "Default Template",
 	"roles": [
         {
-            "name": {
-				"PT_BR": "Moderação",
-				"EN": "Mods"
-			},
+            "name": "Moderação",
 			"color": "#0985c5",
-			"position": 1,
-            "permissions": 4260888183,
+            "permissions": "4260888183",
 			"hoist": true,
 			"mentionable": false
         },
         {
-            "name": {
-				"PT_BR": "Membro",
-				"EN": "Member"
-			},
+            "name": "Membro",
 			"color": "#1e8f36",
-			"position": 0,
-            "permissions": 70372929,
+            "permissions": "70372929",
 			"hoist": false,
 			"mentionable": true
         }
     ],
     "channels": [
         {
-            "name": {
-				"PT_BR": "Informações",
-				"EN": "Info"
-			},
-            "type": "category",
+            "name": "Informações",
+            "type": "GUILD_CATEGORY",
             "permissionOverwrites": [
 				{
-					"name": {
-						"PT_BR": "Membro",
-						"EN": "Member"
-					},
+					"name": "Membro",
 					"allow": [],
 					"deny": ["SEND_MESSAGES"]
 				},
 				{
-					"name": {
-						"PT_BR": "Moderação",
-						"EN": "Mods"
-					},
+					"name": "Moderação",
 					"allow": ["SEND_MESSAGES"],
 					"deny": []
 				}
 			],
             "child": [
                 {
-                    "name": {
-						"PT_BR": "bem-vindo",
-						"EN": "welcome"
-					},
+                    "name": "bem-vindo",
                     "type": "text",
 					"permissionOverwrites": []
                 },
                 {
-                    "name": {
-						"PT_BR": "regras",
-						"EN": "rules"
-					},
+                    "name": "regras",
                     "type": "text",
 					"permissionOverwrites": []
                 },
                 {
-                    "name": {
-						"PT_BR": "ajuda",
-						"EN": "need-help"
-					},
+                    "name": "ajuda",
                     "type": "text",
 					"permissionOverwrites": []
                 },
                 {
-                    "name": {
-						"PT_BR": "anúncios",
-						"EN": "announcements"
-					},
+                    "name": "anúncios",
                     "type": "text",
 					"permissionOverwrites": []
                 }
             ]
         },
         {
-            "name": {
-				"PT_BR": "Lobby-1",
-				"EN": "Lobby-1"
-			},
-            "type": "category",
+            "name": "Lobby-1",
+            "type": "GUILD_CATEGORY",
             "scalable": true,
 			"permissionOverwrites": [],
             "child": [
                 {
-                    "name": {
-						"PT_BR": "nome-temporario-1",
-						"EN": "temporary-name-1"
-					},
+                    "name": "nome-temporario-1",
                     "type": "text",
 					"permissionOverwrites": []
                 },
                 {
-                    "name": {
-						"PT_BR": "nome-temporario-2",
-						"EN": "temporary-name-2"
-					},
+                    "name": "nome-temporario-1",
                     "type": "text",
 					"permissionOverwrites": []
                 },
                 {
-                    "name": {
-						"PT_BR": "nome-temporario-3",
-						"EN": "temporary-name-3"
-					},
+                    "name": "nome-temporario-1",
                     "type": "text",
 					"permissionOverwrites": []
                 },
                 {
-                    "name": {
-						"PT_BR": "nome-temporario-audio",
-						"EN": "temporary-name-audio"
-					},
+                    "name": "nome-temporario-1",
                     "type": "voice",
 					"permissionOverwrites": []
                 }
             ]
         },
         {
-            "name": {
-				"PT_BR": "Moderação",
-				"EN": "Moderation"
-			},
-            "type": "category",
+            "name": "Moderação",
+            "type": "GUILD_CATEGORY",
 			"permissionOverwrites": [
 				{
-					"name": {
-						"PT_BR": "Membro",
-						"EN": "Member"
-					},
+					"name": "Membro",
 					"allow": [],
 					"deny": ["VIEW_CHANNEL"]
 				},
 				{
-					"name": {
-						"PT_BR": "Moderação",
-						"EN": "Mods"
-					},
+					"name": "Moderação",
 					"allow": ["VIEW_CHANNEL"],
 					"deny": []
 				}
 			],
             "child": [
                 {
-                    "name": {
-						"PT_BR": "usuarios-entraram",
-						"EN": "users-joined"
-					},
+                    "name": "usuarios-entraram",
                     "type": "text",
 					"permissionOverwrites": [],
 					"userJoinedChannel": true
                 },
                 {
-                    "name": {
-						"PT_BR": "usuarios-sairam",
-						"EN": "users-left"
-					},
+                    "name": "usuarios-sairam",
                     "type": "text",
 					"permissionOverwrites": [],
 					"userLeftChannel": true
                 },
                 {
-                    "name": {
-						"PT_BR": "chat-moderadores",
-						"EN": "chat-mods"
-					},
+                    "name": "chat-moderadores",
                     "type": "text",
 					"permissionOverwrites": []
                 },
                 {
-                    "name": {
-						"PT_BR": "sala-de-reuniões",
-						"EN": "meeting-room"
-					},
+                    "name": "sala-de-reuniões",
                     "type": "voice",
 					"permissionOverwrites": []
                 }
