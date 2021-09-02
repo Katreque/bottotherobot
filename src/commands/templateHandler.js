@@ -2,17 +2,14 @@ const fs = require('fs');
 const { Collection } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
-const TemplateEnum = require('../enums/TemplateEnums');
-const TemplateSizeEnum = require('../enums/TemplateSizeEnums');
-const TemplateLangEnum = require('../enums/TemplateLangEnums');
-
 const DEFAULT_TEMPLATE_JSON = require('../templates/default.json');
 
 module.exports = {
 	data: 
 		new SlashCommandBuilder()
 		.setName('template')
-		.setDescription('Template POG')
+		.setDescription('Set up your Discord based on the template configuration.')
+		.setDefaultPermission(false)
 	,
 
 	async execute(interaction) {

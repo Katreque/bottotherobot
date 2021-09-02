@@ -16,15 +16,45 @@ for (const file of commandFiles) {
 
 const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN);
 
+let allCommands;
+
 (async () => {
 	try {
-		await rest.put(
+		allCommands = await rest.put(
 			Routes.applicationGuildCommands(process.env.DISCORD_ID, "838848243269763143"),
 			//Routes.applicationCommands(process.env.DISCORD_ID),
 			{ body: commands },
 		);
 
 		console.log('Successfully registered application commands.');
+	} catch (error) {
+		console.error(error);
+	}
+
+	try {
+		let json = [];
+
+		allCommands.forEach(comm => {
+			json.push(
+				{
+					id: comm.id,
+					permissions: [
+						{
+							id: '883074867287699499',
+							type: 1,
+							permission: true
+						}
+					]
+				}
+			)
+		});
+
+		await rest.put(
+			Routes.guildApplicationCommandsPermissions(process.env.DISCORD_ID, '838848243269763143'),
+			{ body: json },
+		);
+
+		console.log('Successfully registered application permissions.');
 	} catch (error) {
 		console.error(error);
 	}
