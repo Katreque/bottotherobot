@@ -21,8 +21,7 @@ let allCommands;
 (async () => {
 	try {
 		allCommands = await rest.put(
-			Routes.applicationGuildCommands(process.env.DISCORD_ID, "838848243269763143"),
-			//Routes.applicationCommands(process.env.DISCORD_ID),
+			Routes.applicationGuildCommands(process.env.DISCORD_ID, process.env.GUILD_ID),
 			{ body: commands },
 		);
 
@@ -32,6 +31,10 @@ let allCommands;
 	}
 
 	try {
+		const guild = await rest.get(
+			Routes.guild(process.env.GUILD_ID),
+		);
+
 		let json = [];
 
 		allCommands.forEach(comm => {
@@ -40,8 +43,8 @@ let allCommands;
 					id: comm.id,
 					permissions: [
 						{
-							id: '883074867287699499',
-							type: 1,
+							id: guild?.owner_id,
+							type: 2,
 							permission: true
 						}
 					]
@@ -50,7 +53,7 @@ let allCommands;
 		});
 
 		await rest.put(
-			Routes.guildApplicationCommandsPermissions(process.env.DISCORD_ID, '838848243269763143'),
+			Routes.guildApplicationCommandsPermissions(process.env.DISCORD_ID, process.env.GUILD_ID),
 			{ body: json },
 		);
 

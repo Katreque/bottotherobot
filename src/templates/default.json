@@ -9,13 +9,17 @@
 			"hoist": true,
 			"mentionable": false
         },
-        {
+		{
             "name": "Membro",
 			"color": "#1e8f36",
             "permissions": "70372929",
 			"hoist": false,
 			"mentionable": true
-        }
+        },
+		{
+			"name": "@everyone",
+			"permissions": "0"
+		}
     ],
     "channels": [
         {
@@ -23,35 +27,35 @@
             "type": "GUILD_CATEGORY",
             "permissionOverwrites": [
 				{
+					"name": "@everyone",
+					"allow": ["VIEW_CHANNEL"],
+					"deny": []
+				},
+				{
 					"name": "Membro",
 					"allow": [],
 					"deny": ["SEND_MESSAGES"]
-				},
-				{
-					"name": "Moderação",
-					"allow": ["SEND_MESSAGES"],
-					"deny": []
 				}
 			],
             "child": [
                 {
                     "name": "bem-vindo",
-                    "type": "text",
+                    "type": "GUILD_TEXT",
 					"permissionOverwrites": []
                 },
                 {
                     "name": "regras",
-                    "type": "text",
+                    "type": "GUILD_TEXT",
 					"permissionOverwrites": []
                 },
                 {
                     "name": "ajuda",
-                    "type": "text",
+                    "type": "GUILD_TEXT",
 					"permissionOverwrites": []
                 },
                 {
                     "name": "anúncios",
-                    "type": "text",
+                    "type": "GUILD_TEXT",
 					"permissionOverwrites": []
                 }
             ]
@@ -59,27 +63,26 @@
         {
             "name": "Lobby-1",
             "type": "GUILD_CATEGORY",
-            "scalable": true,
 			"permissionOverwrites": [],
             "child": [
                 {
                     "name": "nome-temporario-1",
-                    "type": "text",
+                    "type": "GUILD_TEXT",
 					"permissionOverwrites": []
                 },
                 {
                     "name": "nome-temporario-1",
-                    "type": "text",
+                    "type": "GUILD_TEXT",
 					"permissionOverwrites": []
                 },
                 {
                     "name": "nome-temporario-1",
-                    "type": "text",
+                    "type": "GUILD_TEXT",
 					"permissionOverwrites": []
                 },
                 {
                     "name": "nome-temporario-1",
-                    "type": "voice",
+                    "type": "GUILD_VOICE",
 					"permissionOverwrites": []
                 }
             ]
@@ -92,43 +95,32 @@
 					"name": "Membro",
 					"allow": [],
 					"deny": ["VIEW_CHANNEL"]
-				},
-				{
-					"name": "Moderação",
-					"allow": ["VIEW_CHANNEL"],
-					"deny": []
 				}
 			],
             "child": [
                 {
                     "name": "usuarios-entraram",
-                    "type": "text",
+                    "type": "GUILD_TEXT",
 					"permissionOverwrites": [],
 					"userJoinedChannel": true
                 },
                 {
                     "name": "usuarios-sairam",
-                    "type": "text",
+                    "type": "GUILD_TEXT",
 					"permissionOverwrites": [],
 					"userLeftChannel": true
                 },
                 {
                     "name": "chat-moderadores",
-                    "type": "text",
+                    "type": "GUILD_TEXT",
 					"permissionOverwrites": []
                 },
                 {
                     "name": "sala-de-reuniões",
-                    "type": "voice",
+                    "type": "GUILD_VOICE",
 					"permissionOverwrites": []
                 }
             ]
-        }
-    ],
-    "modules": [
-        {
-            "id": 5,
-            "config": {}
         }
     ]
 }
