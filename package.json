@@ -15,7 +15,8 @@
 	"scripts": {
 		"start": "node src/index.js",
 		"dev": "nodemon src/index.js",
-		"deploy-commands": "node src/deploy-commands.js",
+		"owner-commands": "node src/deploy-owner-commands.js",
+		"user-commands": "node src/deploy-user-commands.js",
 		"test": "jest --collectCoverage --silent",
 		"lint": "eslint src",
 		"uglify": "uglifyjs-folder src -eo build",

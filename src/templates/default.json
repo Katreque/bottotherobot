@@ -7,14 +7,16 @@
 			"color": "#0985c5",
             "permissions": "4260888183",
 			"hoist": true,
-			"mentionable": false
+			"mentionable": false,
+			"gettable": false
         },
 		{
             "name": "Membro",
 			"color": "#1e8f36",
             "permissions": "70372929",
 			"hoist": false,
-			"mentionable": true
+			"mentionable": true,
+			"gettable": true
         },
 		{
 			"name": "@everyone",

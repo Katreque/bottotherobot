@@ -7,23 +7,26 @@ const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 
 const commands = [];
-const commandFiles = fs.readdirSync(path.resolve(__dirname, './commands')).filter(file => file.endsWith('.js'));
-
-for (const file of commandFiles) {
-	const command = require(`${path.resolve(__dirname, './commands')}/${file}`);
+const commandOwnerFiles = fs.readdirSync(path.resolve(__dirname, './commands/owner')).filter(file => file.endsWith('.js'));
+for (const file of commandOwnerFiles) {
+	const command = require(`${path.resolve(__dirname, './commands/owner')}/${file}`);
 	commands.push(command.data.toJSON());
 };
 
 const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN);
 
-let allCommands;
+const ownerCommands = [];
 
 (async () => {
 	try {
-		allCommands = await rest.put(
-			Routes.applicationGuildCommands(process.env.DISCORD_ID, process.env.GUILD_ID),
-			{ body: commands },
-		);
+
+		commands.forEach(async command => {
+			let _commands = await rest.post(
+				Routes.applicationGuildCommands(process.env.DISCORD_ID, process.env.GUILD_ID),
+				{ body: command },
+			);
+			ownerCommands.push(_commands);
+		})
 
 		console.log('Successfully registered application commands.');
 	} catch (error) {
@@ -37,7 +40,7 @@ let allCommands;
 
 		let json = [];
 
-		allCommands.forEach(comm => {
+		ownerCommands.forEach(comm => {
 			json.push(
 				{
 					id: comm.id,

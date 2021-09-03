@@ -2,7 +2,7 @@ const fs = require('fs');
 const { Collection } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
-const DEFAULT_TEMPLATE_JSON = require('../templates/default.json');
+const DEFAULT_TEMPLATE_JSON = require('../../templates/default.json');
 
 module.exports = {
 	data: 
@@ -104,13 +104,13 @@ async function createChannels(channels, interaction, parent) {
 			);
 
 			if (channels[i].userJoinedChannel) {
-				const CONFIG = require('../../config.json');
+				const CONFIG = require('../../../config.json');
 				CONFIG.user_joined_channel = channelCreated.id;
 				fs.writeFile('config.json', JSON.stringify(CONFIG), () => {});
 			}
 
 			if (channels[i].userLeftChannel) {
-				const CONFIG = require('../../config.json');
+				const CONFIG = require('../../../config.json');
 				CONFIG.user_left_channel = channelCreated.id;
 				fs.writeFile('config.json', JSON.stringify(CONFIG), () => {});
 			}
