@@ -9,12 +9,11 @@ module.exports = {
 	,
 
 	async execute(interaction) {
-		interaction.guild.roles.cache.each((role) => {
-			if (role.name === 'Member' || role.name === 'Membro') role.delete();
-		});
-		interaction.guild.roles.cache.each((role) => {
-			if (role.name === 'Mods' || role.name === 'Moderação') role.delete();
-		});
+		/*interaction.guild.roles.cache.each(async (role) => {
+			if (!(role.name === "@everyone" || role.name === "Botto the Robot" || role.name === "Líder")) {
+				await role.delete();
+			}
+		});*/
 		interaction.guild.channels.cache.each((channel) => channel.delete());
 
 		const chronobreak = await interaction.guild.channels.create('Chronobreak');

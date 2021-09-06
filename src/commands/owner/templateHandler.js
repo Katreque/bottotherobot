@@ -28,19 +28,16 @@ function selectedTemplate() {
 
 async function createRoles(roles, interaction) {
 	roles.forEach(async (role) => {
+		const roleExist = await interaction.guild.roles.cache.find(r => r.name === role.name);
 
-		if (role.name === '@everyone') {
-
+		if (roleExist) {
 			try {
-				const everyoneRole = await interaction.guild.roles.cache.find(role => role.name === role.name);
-				await interaction.guild.roles.edit(everyoneRole.id, {permissions: role.permissions})
+				await interaction.guild.roles.edit(roleExist.id, {permissions: role.permissions})
 			} catch (error) {
 				console.log(error);
 				interaction.editReply({content: 'Discord API Error on editing @everyone role.', ephemeral: true});
 			}
-
 		} else {
-
 			try {
 				await interaction.guild.roles.create({
 					name: role.name,
@@ -54,7 +51,6 @@ async function createRoles(roles, interaction) {
 				interaction.editReply({content: 'Discord API Error on creating roles.', ephemeral: true});
 			}
 		}
-
 	});
 };
 
