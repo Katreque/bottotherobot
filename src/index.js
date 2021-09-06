@@ -12,7 +12,8 @@ const { checkDiscordInfo, checkIfExistsConfigFile } = require('./initHandler');
 checkIfExistsConfigFile();
 checkDiscordInfo(process.env.DISCORD_TOKEN, process.env.DISCORD_ID);
 
-const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+// Client Initialization
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS] });
 client.commands = new Collection();
 
 const commandOwnerFiles = fs.readdirSync(path.resolve(__dirname, './commands/owner')).filter(file => file.endsWith('.js'));

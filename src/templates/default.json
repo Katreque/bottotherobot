@@ -20,7 +20,8 @@
         },
 		{
 			"name": "@everyone",
-			"permissions": "0"
+			"permissions": "0",
+			"gettable": false
 		}
     ],
     "channels": [
