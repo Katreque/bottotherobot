@@ -10,7 +10,7 @@ const { checkDiscordInfo, checkIfExistsConfigFile } = require('./initHandler');
 
 // Initial Verifications
 checkIfExistsConfigFile();
-checkDiscordInfo(process.env.DISCORD_TOKEN, process.env.DISCORD_ID);
+checkDiscordInfo(process.env.DISCORD_TOKEN, process.env.DISCORD_ID, process.env.GUILD_ID);
 
 // Client Initialization
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS] });
