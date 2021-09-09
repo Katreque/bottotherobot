@@ -1,22 +1,21 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
 module.exports = {
-	data: 
+	data:
 		new SlashCommandBuilder()
-		.setName('reset')
-		.setDescription('**Internal Usage Only** - Reset all your channel channels and roles.')
-		.setDefaultPermission(false)
-	,
+			.setName('reset')
+			.setDescription('**Internal Usage Only** - Reset all your channel channels and roles.')
+			.setDefaultPermission(false),
 
 	async execute(interaction) {
-		/*interaction.guild.roles.cache.each(async (role) => {
-			if (!(role.name === "@everyone" || role.name === "Botto the Robot" || role.name === "Líder")) {
+		/* interaction.guild.roles.cache.each(async (role) => {
+			if (!(role.name === "@everyone")) {
 				await role.delete();
 			}
-		});*/
+		}); */
 		interaction.guild.channels.cache.each((channel) => channel.delete());
 
 		const chronobreak = await interaction.guild.channels.create('Chronobreak');
-		await chronobreak.send(`Guild reset is done!`);
+		await chronobreak.send('Guild reset is done!');
 	},
 };

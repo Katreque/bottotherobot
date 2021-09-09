@@ -16,13 +16,17 @@ checkDiscordInfo(process.env.DISCORD_TOKEN, process.env.DISCORD_ID, process.env.
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS] });
 client.commands = new Collection();
 
-const commandOwnerFiles = fs.readdirSync(path.resolve(__dirname, './commands/owner')).filter(file => file.endsWith('.js'));
+const commandOwnerFiles = fs.readdirSync(path.resolve(__dirname, './commands/owner'))
+	.filter((file) => file.endsWith('.js'));
+
 for (const file of commandOwnerFiles) {
 	const command = require(`${path.resolve(__dirname, './commands/owner')}/${file}`);
 	client.commands.set(command.data.name, command);
 }
 
-const commandUserFiles = fs.readdirSync(path.resolve(__dirname, './commands/user')).filter(file => file.endsWith('.js'));
+const commandUserFiles = fs.readdirSync(path.resolve(__dirname, './commands/user'))
+	.filter((file) => file.endsWith('.js'));
+
 for (const file of commandUserFiles) {
 	const command = require(`${path.resolve(__dirname, './commands/user')}/${file}`);
 	client.commands.set(command.data.name, command);

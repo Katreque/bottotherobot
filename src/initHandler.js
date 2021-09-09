@@ -13,9 +13,11 @@ module.exports = {
 				user_joined_channel: '',
 				user_left_channel: '',
 			};
-	
+
 			fs.writeFile('config.json', JSON.stringify(template), () => {});
 			return template;
 		}
+
+		return {};
 	},
 };

@@ -10,7 +10,14 @@
     "rules": {
         "no-tabs": ["error", { "allowIndentationTabs": true }],
 		"indent": ["error", "tab", {"SwitchCase": 1}],
+		"max-len": ["error", { "code": 120, "ignoreTemplateLiterals": true }],
 		"no-console": "off",
-		"no-await-in-loop": "off"
-    }
+		"no-await-in-loop": "off",
+		"no-unused-expressions": "off",
+		"no-restricted-syntax": "off",
+		"import/no-dynamic-require": "off",
+		"global-require": "off"
+
+    },
+	"ignorePatterns": ["src/deploy-owner-commands.js", "src/deploy-user-commands.js"]
 }
