@@ -15,9 +15,6 @@ module.exports = {
 			};
 
 			fs.writeFile('config.json', JSON.stringify(template), () => {});
-			return template;
 		}
-
-		return {};
 	},
 };
