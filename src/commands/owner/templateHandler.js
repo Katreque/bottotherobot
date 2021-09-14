@@ -1,15 +1,14 @@
 const fs = require('fs');
-const { Collection } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
 const DEFAULT_TEMPLATE_JSON = require('../../templates/default.json');
-const CONFIG = require('../../../config.json');
+const CONFIG = require('../../../config.json') || {};
 
-function selectedTemplate() {
+function _selectedTemplate() {
 	return DEFAULT_TEMPLATE_JSON;
 }
 
-async function createRoles(roles, interaction) {
+async function _createRoles(roles, interaction) {
 	roles.forEach(async (role) => {
 		const roleExist = await interaction.guild.roles.cache.find((r) => r.name === role.name);
 
@@ -37,7 +36,7 @@ async function createRoles(roles, interaction) {
 	});
 }
 
-async function adjustChannelObject(channel, interaction, parent) {
+async function _adjustChannelObject(channel, interaction, parent) {
 	const channelObj = {};
 
 	channelObj.data = {
@@ -48,11 +47,7 @@ async function adjustChannelObject(channel, interaction, parent) {
 
 	try {
 		// Get fresh info about the roles created before.
-		const freshRolesCollection = new Collection();
 		const freshRolesMap = await interaction.guild.roles.fetch();
-		freshRolesMap.forEach((fr) => {
-			freshRolesCollection.set(fr);
-		});
 
 		if (channel.permissionOverwrites.length) {
 			channel.permissionOverwrites.forEach((po) => {
@@ -73,9 +68,9 @@ async function adjustChannelObject(channel, interaction, parent) {
 	return channelObj;
 }
 
-async function createChannels(channels, interaction, parent) {
+async function _createChannels(channels, interaction, parent) {
 	for (let i = 0; i < channels.length; i += 1) {
-		const channelConfig = await adjustChannelObject(channels[i], interaction, parent);
+		const channelConfig = await _adjustChannelObject(channels[i], interaction, parent);
 		try {
 			const channelCreated = await interaction.guild.channels.create(
 				channels[i].name,
@@ -93,7 +88,7 @@ async function createChannels(channels, interaction, parent) {
 			}
 
 			if (channelConfig.child) {
-				await createChannels(channelConfig.child, interaction, channelCreated);
+				await _createChannels(channelConfig.child, interaction, channelCreated);
 			}
 		} catch (error) {
 			console.log(error);
@@ -111,10 +106,14 @@ module.exports = {
 
 	async execute(interaction) {
 		await interaction.deferReply();
-		const SELECTED_TEMPLATE = selectedTemplate();
+		const SELECTED_TEMPLATE = _selectedTemplate();
 
-		await createRoles(SELECTED_TEMPLATE.roles, interaction);
-		await createChannels(SELECTED_TEMPLATE.channels, interaction);
+		await _createRoles(SELECTED_TEMPLATE.roles, interaction);
+		await _createChannels(SELECTED_TEMPLATE.channels, interaction);
 		await interaction.editReply({ content: 'Template\'s execution is done!', ephemeral: true });
 	},
+	_selectedTemplate,
+	_createRoles,
+	_adjustChannelObject,
+	_createChannels
 };

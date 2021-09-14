@@ -7,6 +7,12 @@ module.exports = {
 		}
 	},
 
+	checkIfHadErrorWrittingFile(err) {
+		if (err) {
+			throw new Error('Error on writting config.json.');
+		}
+	},
+
 	checkIfExistsConfigFile() {
 		if (!fs.existsSync('config.json')) {
 			const template = {
@@ -14,7 +20,7 @@ module.exports = {
 				user_left_channel: '',
 			};
 
-			fs.writeFile('config.json', JSON.stringify(template), () => {});
+			fs.writeFileSync('config.json', JSON.stringify(template), module.exports.checkIfHadErrorWrittingFile);
 		}
-	},
+	}
 };

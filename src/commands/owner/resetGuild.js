@@ -8,11 +8,6 @@ module.exports = {
 			.setDefaultPermission(false),
 
 	async execute(interaction) {
-		/* interaction.guild.roles.cache.each(async (role) => {
-			if (!(role.name === "@everyone")) {
-				await role.delete();
-			}
-		}); */
 		interaction.guild.channels.cache.each((channel) => channel.delete());
 
 		const chronobreak = await interaction.guild.channels.create('Chronobreak');
