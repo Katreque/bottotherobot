@@ -22,5 +22,5 @@ module.exports = {
 
 			fs.writeFileSync('config.json', JSON.stringify(template), module.exports.checkIfHadErrorWrittingFile);
 		}
-	}
+	},
 };

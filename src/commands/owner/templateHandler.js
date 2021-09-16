@@ -2,26 +2,25 @@ const fs = require('fs');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
 const DEFAULT_TEMPLATE_JSON = require('../../templates/default.json');
-const CONFIG = require('../../../config.json') || {};
 
-function _selectedTemplate() {
+function selectedTemplate() {
 	return DEFAULT_TEMPLATE_JSON;
 }
 
-async function _createRoles(roles, interaction) {
+async function createRoles(roles, interaction) {
 	roles.forEach(async (role) => {
-		const roleExist = await interaction.guild.roles.cache.find((r) => r.name === role.name);
+		const roleExist = interaction.guild.roles.cache.find((r) => r.name === role.name);
 
 		if (roleExist) {
 			try {
-				await interaction.guild.roles.edit(roleExist.id, { permissions: role.permissions });
+				interaction.guild.roles.edit(roleExist.id, { permissions: role.permissions });
 			} catch (error) {
 				console.log(error);
 				interaction.editReply({ content: 'Discord API Error on editing @everyone role.', ephemeral: true });
 			}
 		} else {
 			try {
-				await interaction.guild.roles.create({
+				interaction.guild.roles.create({
 					name: role.name,
 					color: role.color,
 					permissions: role.permissions,
@@ -36,7 +35,7 @@ async function _createRoles(roles, interaction) {
 	});
 }
 
-async function _adjustChannelObject(channel, interaction, parent) {
+async function adjustChannelObject(channel, interaction, parent) {
 	const channelObj = {};
 
 	channelObj.data = {
@@ -68,9 +67,9 @@ async function _adjustChannelObject(channel, interaction, parent) {
 	return channelObj;
 }
 
-async function _createChannels(channels, interaction, parent) {
+async function createChannels(channels, interaction, parent) {
 	for (let i = 0; i < channels.length; i += 1) {
-		const channelConfig = await _adjustChannelObject(channels[i], interaction, parent);
+		const channelConfig = await adjustChannelObject(channels[i], interaction, parent);
 		try {
 			const channelCreated = await interaction.guild.channels.create(
 				channels[i].name,
@@ -78,17 +77,19 @@ async function _createChannels(channels, interaction, parent) {
 			);
 
 			if (channels[i].userJoinedChannel) {
+				const CONFIG = require('../../../config.json');
 				CONFIG.user_joined_channel = channelCreated.id;
 				fs.writeFile('config.json', JSON.stringify(CONFIG), () => {});
 			}
 
 			if (channels[i].userLeftChannel) {
+				const CONFIG = require('../../../config.json');
 				CONFIG.user_left_channel = channelCreated.id;
 				fs.writeFile('config.json', JSON.stringify(CONFIG), () => {});
 			}
 
 			if (channelConfig.child) {
-				await _createChannels(channelConfig.child, interaction, channelCreated);
+				await createChannels(channelConfig.child, interaction, channelCreated);
 			}
 		} catch (error) {
 			console.log(error);
@@ -106,14 +107,13 @@ module.exports = {
 
 	async execute(interaction) {
 		await interaction.deferReply();
-		const SELECTED_TEMPLATE = _selectedTemplate();
 
-		await _createRoles(SELECTED_TEMPLATE.roles, interaction);
-		await _createChannels(SELECTED_TEMPLATE.channels, interaction);
+		await createRoles(selectedTemplate().roles, interaction);
+		await createChannels(selectedTemplate().channels, interaction);
 		await interaction.editReply({ content: 'Template\'s execution is done!', ephemeral: true });
 	},
-	_selectedTemplate,
-	_createRoles,
-	_adjustChannelObject,
-	_createChannels
+	selectedTemplate,
+	createRoles,
+	adjustChannelObject,
+	createChannels,
 };
