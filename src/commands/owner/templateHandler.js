@@ -69,7 +69,7 @@ async function adjustChannelObject(channel, interaction, parent) {
 
 async function createChannels(channels, interaction, parent) {
 	for (let i = 0; i < channels.length; i += 1) {
-		const channelConfig = await adjustChannelObject(channels[i], interaction, parent);
+		const channelConfig = await this.adjustChannelObject(channels[i], interaction, parent);
 		try {
 			const channelCreated = await interaction.guild.channels.create(
 				channels[i].name,
@@ -79,17 +79,17 @@ async function createChannels(channels, interaction, parent) {
 			if (channels[i].userJoinedChannel) {
 				const CONFIG = require('../../../config.json');
 				CONFIG.user_joined_channel = channelCreated.id;
-				fs.writeFile('config.json', JSON.stringify(CONFIG), () => {});
+				fs.writeFileSync('config.json', JSON.stringify(CONFIG), () => {});
 			}
 
 			if (channels[i].userLeftChannel) {
 				const CONFIG = require('../../../config.json');
 				CONFIG.user_left_channel = channelCreated.id;
-				fs.writeFile('config.json', JSON.stringify(CONFIG), () => {});
+				fs.writeFileSync('config.json', JSON.stringify(CONFIG), () => {});
 			}
 
 			if (channelConfig.child) {
-				await createChannels(channelConfig.child, interaction, channelCreated);
+				await this.createChannels(channelConfig.child, interaction, channelCreated);
 			}
 		} catch (error) {
 			console.log(error);
@@ -108,8 +108,8 @@ module.exports = {
 	async execute(interaction) {
 		await interaction.deferReply();
 
-		await createRoles(selectedTemplate().roles, interaction);
-		await createChannels(selectedTemplate().channels, interaction);
+		await this.createRoles(this.selectedTemplate().roles, interaction);
+		await this.createChannels(this.selectedTemplate().channels, interaction);
 		await interaction.editReply({ content: 'Template\'s execution is done!', ephemeral: true });
 	},
 	selectedTemplate,

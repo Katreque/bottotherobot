@@ -1,3 +1,4 @@
+const fs = require('fs');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const templateHandler = require('../../../src/commands/owner/templateHandler');
 
@@ -16,6 +17,8 @@ const selectedTemplateObj = {
 
 	]
 }
+
+jest.mock('fs');
 
 describe('data', () => {
 
@@ -158,10 +161,285 @@ describe('createRoles', () => {
 
 });
 
+describe('adjustChannelObject', () => {
+
+	test('Check if func is defined.', () => {
+		expect(templateHandler.adjustChannelObject).toBeDefined();
+	});
+	
+	test('Should return the right channel object, when theres no parent, no child and no permission overwrites.', () => {
+		let channel = {
+			name: "BOB",
+			type: "GUILD_TEXT",
+			permissionOverwrites: []
+		}
+		
+		let interaction = {
+			editReply: jest.fn(),
+			guild: {
+				roles: {
+					fetch: jest.fn().mockResolvedValue({})
+				}
+			}
+		}
+
+		expect(templateHandler.adjustChannelObject(channel, interaction, undefined)).resolves.toEqual({
+			data: {
+				type: channel.type,
+				permissionOverwrites: [],
+				parent: undefined,
+			},
+			child: undefined
+		});
+	});
+
+	test('Should return the right channel object, when theres a parent, no child and no permission overwrites.', () => {
+		let channel = {
+			name: "BOB",
+			type: "GUILD_TEXT",
+			permissionOverwrites: []
+		}
+		
+		let interaction = {
+			editReply: jest.fn(),
+			guild: {
+				roles: {
+					fetch: jest.fn().mockResolvedValue({})
+				}
+			}
+		}
+
+		let parent = {
+			name: "BOB's Daddy",
+			type: "GUILD_TEXT",
+			permissionOverwrites: []
+		}
+
+		expect(templateHandler.adjustChannelObject(channel, interaction, parent)).resolves.toEqual({
+			data: {
+				type: channel.type,
+				permissionOverwrites: [],
+				parent: parent,
+			},
+			child: undefined
+		});
+	});
+
+	test('Should return the right channel object, when theres a parent, a child and no permission overwrites.', () => {
+		let channel = {
+			name: "BOB",
+			type: "GUILD_TEXT",
+			permissionOverwrites: [],
+			child: [
+				{
+					name: "BOB's Child",
+					type: "GUILD_TEXT",
+					permissionOverwrites: []
+				}
+			]
+		}
+		
+		let interaction = {
+			editReply: jest.fn(),
+			guild: {
+				roles: {
+					fetch: jest.fn().mockResolvedValue({})
+				}
+			}
+		}
+
+		let parent = {
+			name: "BOB's Daddy",
+			type: "GUILD_TEXT",
+			permissionOverwrites: []
+		}
+
+		expect(templateHandler.adjustChannelObject(channel, interaction, parent)).resolves.toEqual({
+			data: {
+				type: channel.type,
+				permissionOverwrites: [],
+				parent: parent,
+			},
+			child: channel.child
+		});
+	});
+
+	test('Should return the right channel object, when theres a parent, a child and permission overwrites.', () => {
+		let channel = {
+			name: "BOB",
+			type: "GUILD_TEXT",
+			permissionOverwrites: [
+				{
+					name: "KEKW",
+					allow: [],
+					deny: ["SEND_MESSAGES"]
+				}
+			],
+			child: [
+				{
+					name: "BOB's Child",
+					type: "GUILD_TEXT",
+					permissionOverwrites: []
+				}
+			]
+		}
+		
+		let interaction = {
+			editReply: jest.fn(),
+			guild: {
+				roles: {
+					fetch: jest.fn().mockResolvedValue({
+						find: jest.fn().mockReturnValue('Role')
+					})
+				}
+			}
+		}
+
+		let parent = {
+			name: "BOB's Daddy",
+			type: "GUILD_TEXT",
+			permissionOverwrites: []
+		}
+
+		expect(templateHandler.adjustChannelObject(channel, interaction, parent)).resolves.toEqual({
+			data: {
+				type: channel.type,
+				permissionOverwrites: [
+					{
+						id: "Role",
+						allow: [],
+						deny: ["SEND_MESSAGES"],
+					}
+				],
+				parent: parent,
+			},
+			child: channel.child
+		});
+	});
+
+	test('Discord API died.', () => {
+		let channel = {
+			name: "BOB",
+			type: "GUILD_TEXT",
+			permissionOverwrites: []
+		}
+		
+		let interaction = {
+			editReply: jest.fn(),
+			guild: {
+				roles: {
+					fetch: jest.fn(() => { throw new Error(); })
+				}
+			}
+		}
+
+		templateHandler.adjustChannelObject(channel, interaction, undefined);
+
+		expect(() => {interaction.guild.roles.fetch()}).toThrow();
+	
+		expect(interaction.editReply).toHaveBeenCalledTimes(1);
+		expect(interaction.editReply).toHaveBeenCalledWith({ content: 'Discord API Error on getting roles.', ephemeral: true });
+	});
+
+});
+
+describe('createChannels', () => {
+
+	beforeAll(() => {
+		templateHandler['adjustChannelObject'] = jest.fn().mockResolvedValue({
+			data: {
+				type: "GUILD_TEXT",
+				permissionOverwrites: [],
+				parent: undefined,
+			},
+			child: undefined
+		});
+	});
+
+	test('Check if func is defined.', () => {
+		expect(templateHandler.createChannels).toBeDefined();
+	});
+
+	test('Should call the right funcs with no events and no child.', async () => {
+		let channels = [
+			{
+				name: "BOB",
+				type: "GUILD_TEXT",
+				permissionOverwrites: []
+			}
+		]
+
+		let interaction = {
+			editReply: jest.fn(),
+			guild: {
+				channels: {
+					create: jest.fn().mockResolvedValue({id: '1'})
+				}
+			}
+		}
+
+		await templateHandler.createChannels(channels, interaction);
+
+		expect(templateHandler.adjustChannelObject).toHaveBeenCalledTimes(1);
+
+		expect(interaction.guild.channels.create).toHaveBeenCalledTimes(1);
+		expect(interaction.guild.channels.create).toHaveBeenCalledWith(
+			channels[0].name,
+			{
+				type: "GUILD_TEXT",
+				permissionOverwrites: [],
+				parent: undefined,
+			}
+		);
+	});
+
+	test('Should call the right funcs with events and no child.', async () => {
+		let channels = [
+			{
+				name: "NANI",
+				type: "GUILD_TEXT",
+				permissionOverwrites: [],
+				userJoinedChannel: true
+			},
+			{
+				name: "OMEGALUL",
+				type: "GUILD_TEXT",
+				permissionOverwrites: [],
+				userLeftChannel: true
+			}
+		]
+
+		let interaction = {
+			editReply: jest.fn(),
+			guild: {
+				channels: {
+					create: jest.fn().mockResolvedValue({id: '1'})
+				}
+			}
+		}
+
+		await templateHandler.createChannels(channels, interaction);
+
+		/*expect(templateHandler.adjustChannelObject).toHaveBeenCalledTimes(2);
+
+		expect(interaction.guild.channels.create).toHaveBeenCalledTimes(2);
+		expect(interaction.guild.channels.create).toHaveBeenCalledWith(
+			channels[0].name,
+			{
+				type: "GUILD_TEXT",
+				permissionOverwrites: [],
+				parent: undefined,
+			}
+		);*/
+
+		expect(fs.writeFileSync).toHaveBeenCalledTimes(2);
+	});
+
+});
+
 describe('execute', () => {
 
 	beforeAll(() => {
-		jest.resetAllMocks();
 		templateHandler['createRoles'] = jest.fn();
 		templateHandler['createChannels'] = jest.fn();
 	})
@@ -172,7 +450,7 @@ describe('execute', () => {
 		expect(jest.isMockFunction(templateHandler.createChannels)).toBe(true);
 	});
 	
-	test('Should do the right function calls.', () => {
+	test('Should do the right function calls.', async () => {
 		let interaction = {
 			deferReply: jest.fn().mockResolvedValue({}),
 			editReply: jest.fn().mockResolvedValue({}),
@@ -187,7 +465,7 @@ describe('execute', () => {
 			}
 		}
 	
-		templateHandler.execute(interaction);
+		await templateHandler.execute(interaction);
 	
 		expect(interaction.deferReply).toHaveBeenCalledTimes(1);
 		expect(interaction.editReply).toHaveBeenCalledTimes(1);
@@ -195,4 +473,3 @@ describe('execute', () => {
 	});
 
 });
-
