@@ -17,7 +17,7 @@
 		"dev": "nodemon src/index.js",
 		"owner-commands": "node src/deploy-owner-commands.js",
 		"user-commands": "node src/deploy-user-commands.js",
-		"test": "jest --collectCoverage",
+		"test": "jest --collectCoverage --silent",
 		"lint": "eslint src",
 		"uglify": "uglifyjs-folder src -eo build",
 		"build": "npm run test && npm run lint && npm run uglify"

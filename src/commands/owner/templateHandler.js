@@ -7,9 +7,13 @@ function selectedTemplate() {
 	return DEFAULT_TEMPLATE_JSON;
 }
 
+function matchName(name1, name2) {
+	return name1 === name2;
+}
+
 async function createRoles(roles, interaction) {
 	roles.forEach(async (role) => {
-		const roleExist = interaction.guild.roles.cache.find((r) => r.name === role.name);
+		const roleExist = interaction.guild.roles.cache.find((r) => this.matchName(r.name, role.name));
 
 		if (roleExist) {
 			try {
@@ -50,7 +54,7 @@ async function adjustChannelObject(channel, interaction, parent) {
 
 		if (channel.permissionOverwrites.length) {
 			channel.permissionOverwrites.forEach((po) => {
-				const roleName = freshRolesMap.find((role) => role.name === po.name);
+				const roleName = freshRolesMap.find((role) => this.matchName(role.name, po.name));
 				channelObj.data.permissionOverwrites.push({
 					id: roleName,
 					allow: po.allow,
@@ -79,13 +83,13 @@ async function createChannels(channels, interaction, parent) {
 			if (channels[i].userJoinedChannel) {
 				const CONFIG = require('../../../config.json');
 				CONFIG.user_joined_channel = channelCreated.id;
-				fs.writeFileSync('config.json', JSON.stringify(CONFIG), () => {});
+				fs.writeFileSync('config.json', JSON.stringify(CONFIG));
 			}
 
 			if (channels[i].userLeftChannel) {
 				const CONFIG = require('../../../config.json');
 				CONFIG.user_left_channel = channelCreated.id;
-				fs.writeFileSync('config.json', JSON.stringify(CONFIG), () => {});
+				fs.writeFileSync('config.json', JSON.stringify(CONFIG));
 			}
 
 			if (channelConfig.child) {
@@ -113,6 +117,7 @@ module.exports = {
 		await interaction.editReply({ content: 'Template\'s execution is done!', ephemeral: true });
 	},
 	selectedTemplate,
+	matchName,
 	createRoles,
 	adjustChannelObject,
 	createChannels,

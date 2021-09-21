@@ -40,19 +40,29 @@ describe('data', () => {
 
 describe('selectedTemplate', () => {
 
-	beforeAll(() => {
-		templateHandler['selectedTemplate'] = jest.fn(() => { return selectedTemplateObj });
-	})
-
 	test('Check if func is defined.', () => {
 		expect(templateHandler.selectedTemplate).toBeDefined();
 	});
 	
 	test('Should return the right object.', () => {
-		const r = templateHandler.selectedTemplate();
-	
-		expect(templateHandler.selectedTemplate).toHaveBeenCalledTimes(1);
-		expect(r).toEqual(selectedTemplateObj);
+		const DEFAULT_TEMPLATE_JSON = require('../../../src/templates/default.json');
+		expect(templateHandler.selectedTemplate()).toEqual(DEFAULT_TEMPLATE_JSON);
+	});
+
+});
+
+describe('matchName', () => {
+
+	test('Check if func is defined.', () => {
+		expect(templateHandler.matchName).toBeDefined();
+	});
+
+	test('Should return true.', () => {
+		expect(templateHandler.matchName('a', 'a')).toBe(true);
+	});
+
+	test('Should return false.', () => {
+		expect(templateHandler.matchName('a', 'b')).toBe(false);
 	});
 
 });
@@ -61,6 +71,7 @@ describe('createRoles', () => {
 
 	beforeAll(() => {
 		templateHandler['selectedTemplate'] = jest.fn(() => { return selectedTemplateObj });
+		templateHandler['matchName'] = jest.fn();
 	})
 
 	test('Check if func is defined.', () => {
@@ -68,11 +79,13 @@ describe('createRoles', () => {
 	});
 	
 	test('Role already exists, so the edit role api is called.', () => {
+		templateHandler['matchName'] = jest.fn().mockReturnValue({id: 'FON'});
+
 		let interaction = {
 			guild: {
 				roles: {
 					cache: {
-						find: jest.fn().mockReturnValue({id: 'a'})
+						find: jest.fn((cb) => cb({r: 'POGGERS'}))
 					},
 					create: jest.fn(),
 					edit: jest.fn().mockResolvedValue({})
@@ -83,8 +96,9 @@ describe('createRoles', () => {
 		templateHandler.createRoles(selectedTemplateObj.roles, interaction);
 	
 		expect(interaction.guild.roles.cache.find).toHaveBeenCalledTimes(1);
+		expect(templateHandler.matchName).toHaveBeenCalledTimes(1);
 		expect(interaction.guild.roles.edit).toHaveBeenCalledTimes(1);
-		expect(interaction.guild.roles.edit).toHaveBeenCalledWith('a', { permissions: selectedTemplateObj.roles[0].permissions });
+		expect(interaction.guild.roles.edit).toHaveBeenCalledWith('FON', { permissions: selectedTemplateObj.roles[0].permissions });
 	});
 	
 	test('Role already exists, but API died.', () => {
@@ -162,6 +176,10 @@ describe('createRoles', () => {
 });
 
 describe('adjustChannelObject', () => {
+
+	beforeAll(() => {
+		templateHandler['matchName'] = jest.fn();
+	})
 
 	test('Check if func is defined.', () => {
 		expect(templateHandler.adjustChannelObject).toBeDefined();
@@ -265,6 +283,8 @@ describe('adjustChannelObject', () => {
 	});
 
 	test('Should return the right channel object, when theres a parent, a child and permission overwrites.', () => {
+		templateHandler['matchName'] = jest.fn().mockReturnValue('Role');
+		
 		let channel = {
 			name: "BOB",
 			type: "GUILD_TEXT",
@@ -289,7 +309,7 @@ describe('adjustChannelObject', () => {
 			guild: {
 				roles: {
 					fetch: jest.fn().mockResolvedValue({
-						find: jest.fn().mockReturnValue('Role')
+						find: jest.fn((cb) => cb({name: 'Pog'}))
 					})
 				}
 			}
@@ -345,7 +365,9 @@ describe('adjustChannelObject', () => {
 
 describe('createChannels', () => {
 
-	beforeAll(() => {
+	beforeEach(() => {
+		fs.writeFileSync.mockClear();
+		
 		templateHandler['adjustChannelObject'] = jest.fn().mockResolvedValue({
 			data: {
 				type: "GUILD_TEXT",
@@ -420,7 +442,7 @@ describe('createChannels', () => {
 
 		await templateHandler.createChannels(channels, interaction);
 
-		/*expect(templateHandler.adjustChannelObject).toHaveBeenCalledTimes(2);
+		expect(templateHandler.adjustChannelObject).toHaveBeenCalledTimes(2);
 
 		expect(interaction.guild.channels.create).toHaveBeenCalledTimes(2);
 		expect(interaction.guild.channels.create).toHaveBeenCalledWith(
@@ -430,9 +452,94 @@ describe('createChannels', () => {
 				permissionOverwrites: [],
 				parent: undefined,
 			}
-		);*/
+		);
 
 		expect(fs.writeFileSync).toHaveBeenCalledTimes(2);
+	});
+
+	test('Should have the right number of func calls with the recursive approach.', async () => {
+		templateHandler['adjustChannelObject'] = jest.fn()
+			.mockResolvedValue({
+				data: {
+					type: "GUILD_TEXT",
+					permissionOverwrites: [],
+					parent: undefined,
+				},
+				child: false
+			})
+			.mockResolvedValueOnce({
+				data: {
+					type: "GUILD_TEXT",
+					permissionOverwrites: [],
+					parent: undefined,
+				},
+				child: [
+					{
+						name: "NANI",
+						type: "GUILD_TEXT",
+						permissionOverwrites: []
+					}
+				]
+			})
+
+		const spy = jest.spyOn(templateHandler, 'createChannels');
+
+		let channels = [
+			{
+				name: "NANI",
+				type: "GUILD_TEXT",
+				permissionOverwrites: [],
+				userJoinedChannel: true
+			},
+			{
+				name: "OMEGALUL",
+				type: "GUILD_TEXT",
+				permissionOverwrites: [],
+				userLeftChannel: true
+			}
+		]
+
+		let interaction = {
+			editReply: jest.fn(),
+			guild: {
+				channels: {
+					create: jest.fn().mockResolvedValue({id: '1'})
+				}
+			}
+		}
+
+		await templateHandler.createChannels(channels, interaction);
+
+		expect(templateHandler.adjustChannelObject).toHaveBeenCalledTimes(3);
+		expect(interaction.guild.channels.create).toHaveBeenCalledTimes(3);
+
+		expect(fs.writeFileSync).toHaveBeenCalledTimes(2);
+		expect(spy).toHaveBeenCalledTimes(2);
+	});
+
+	test('Discord API died.', async () => {
+		let channels = [
+			{
+				name: "NANI",
+				type: "GUILD_TEXT",
+				permissionOverwrites: [],
+				userJoinedChannel: true
+			}
+		]
+
+		let interaction = {
+			editReply: jest.fn(),
+			guild: {
+				channels: {
+					create: jest.fn(() => { throw new Error(); })
+				}
+			}
+		}
+
+		await templateHandler.createChannels(channels, interaction);
+	
+		expect(interaction.editReply).toHaveBeenCalledTimes(1);
+		expect(interaction.editReply).toHaveBeenCalledWith({ content: 'Discord API Error on creating channels.', ephemeral: true });
 	});
 
 });

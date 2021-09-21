@@ -13,6 +13,10 @@ function setChoicesArray() {
 	return array;
 }
 
+function matchName(name1, name2) {
+	return name1 === name2;
+}
+
 module.exports = {
 	data:
 		new SlashCommandBuilder()
@@ -25,28 +29,30 @@ module.exports = {
 				.addChoices(setChoicesArray())),
 
 	async execute(interaction) {
-		const string = interaction.options.getString('options');
+		try {
+			const string = interaction.options.getString('options');
 
-		DEFAULT_JSON.roles.forEach(async (role) => {
-			try {
+			for (const role of DEFAULT_JSON.roles) {
 				if (string === role.name) {
-					let selectedRole = interaction?.member.roles.cache.find((r) => r.name === role.name);
+					let selectedRole = interaction?.member.roles.cache.find((r) => this.matchName(r.name, role.name));
 
 					if (selectedRole) {
 						interaction?.member.roles.remove(selectedRole);
 						return interaction.reply({ content: `Role **${role.name}** was removed.`, ephemeral: true });
 					}
 
-					selectedRole = interaction?.guild.roles.cache.find((r) => r.name === role.name);
+					selectedRole = interaction?.guild.roles.cache.find((r) => this.matchName(r.name, role.name));
 					interaction?.member.roles.add(selectedRole);
 					return interaction.reply({ content: `Role **${role.name}** was added.`, ephemeral: true });
 				}
-
-				return interaction.reply({ content: `Role **${role.name}** was not found.`, ephemeral: true });
-			} catch (error) {
-				console.log(error);
-				return interaction.editReply({ content: 'Getting role error.', ephemeral: true });
 			}
-		});
+
+			return interaction.reply({ content: `Role **${string}** was not found.`, ephemeral: true });
+		} catch (error) {
+			console.log(error);
+			return interaction.editReply({ content: 'Getting role error.', ephemeral: true });
+		}
 	},
+	setChoicesArray,
+	matchName,
 };
