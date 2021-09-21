@@ -34,15 +34,15 @@ module.exports = {
 
 			for (const role of DEFAULT_JSON.roles) {
 				if (string === role.name) {
-					let selectedRole = interaction?.member.roles.cache.find((r) => this.matchName(r.name, role.name));
+					let selectedRole = interaction.member.roles.cache.find((r) => this.matchName(r.name, role.name));
 
 					if (selectedRole) {
-						interaction?.member.roles.remove(selectedRole);
+						interaction.member.roles.remove(selectedRole);
 						return interaction.reply({ content: `Role **${role.name}** was removed.`, ephemeral: true });
 					}
 
-					selectedRole = interaction?.guild.roles.cache.find((r) => this.matchName(r.name, role.name));
-					interaction?.member.roles.add(selectedRole);
+					selectedRole = interaction.guild.roles.cache.find((r) => this.matchName(r.name, role.name));
+					interaction.member.roles.add(selectedRole);
 					return interaction.reply({ content: `Role **${role.name}** was added.`, ephemeral: true });
 				}
 			}

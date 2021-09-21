@@ -45,7 +45,7 @@ const ownerCommands = [];
 					id: comm.id,
 					permissions: [
 						{
-							id: guild?.owner_id,
+							id: guild.owner_id,
 							type: 2,
 							permission: true,
 						},
