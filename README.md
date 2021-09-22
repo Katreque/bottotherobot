@@ -18,13 +18,15 @@ Botto provides useful functions and tools to power-up your Discord bot, totally 
 - Users are able to get/remove the allowed roles to themselves.
 - Add your own code to Botto.
 
-All you need to deal is the hosting. (AWS provides a 12 months free hosting if you need)
+All you need to deal with is the hosting. ([AWS provides a 12 months free hosting if you need](https://aws.amazon.com/free/))
 
 ## Getting Started
 
+<small>Before starting, Node.js 16.6.0 or newer is required.</small>
+
 1. Fork and download the Botto Project.
-2. Ajust the template file.
-3. Setup your bot info on the .env file.
+2. Ajust the [template file](./docs/TEMPLATE_SETUP.md).
+3. Setup your bot info on the [.env file](./docs/ENV_SETUP.md).
 4. Run *npm i* and *npm run commands* on Botto's first execution.
 5. Run *npm start* and invite the bot to your Discord server with the link provided on the console.
 6. Run the */template* command on any channel of your Discord server.
