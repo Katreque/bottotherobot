@@ -6,6 +6,8 @@ const path = require('path');
 const { Client, Collection, Intents } = require('discord.js');
 
 const Events = require('./enums/EventEnums');
+const CONFIG = require('../config.json');
+
 const { checkDiscordInfo, checkIfExistsConfigFile } = require('./initHandler');
 
 // Initial Verifications
@@ -55,7 +57,6 @@ client.on(Events.INTERACTION, async (interaction) => {
 
 client.on(Events.MEMBER_JOINED, async (member) => {
 	try {
-		const CONFIG = require('./config.json');
 		const channel = await member.guild.channels.cache.find((ch) => ch.id === CONFIG.user_joined_channel);
 		channel.send(`**${member.displayName}** joined.`);
 	} catch (error) {
@@ -65,7 +66,6 @@ client.on(Events.MEMBER_JOINED, async (member) => {
 
 client.on(Events.MEMBER_LEFT, async (member) => {
 	try {
-		const CONFIG = require('./config.json');
 		const channel = await member.guild.channels.cache.find((ch) => ch.id === CONFIG.user_left_channel);
 		channel.send(`**${member.displayName}** left.`);
 	} catch (error) {

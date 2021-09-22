@@ -15,23 +15,28 @@ for (const file of commandOwnerFiles) {
 
 const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN);
 
-const ownerCommands = [];
 
-(async () => {
+async function regCommands() {
+	const ownerCommands = [];
+
 	try {
-		commands.forEach(async (command) => {
+		for (let i = 0; i < commands.length; i++) {
 			const _commands = await rest.post(
 				Routes.applicationGuildCommands(process.env.DISCORD_ID, process.env.GUILD_ID),
-				{ body: command },
+				{ body: commands[i] },
 			);
+
 			ownerCommands.push(_commands);
-		});
+		}
 
 		console.log('Successfully registered application commands.');
+		return ownerCommands;
 	} catch (error) {
 		console.error(error);
 	}
+}
 
+async function regPermissions(ownerCommands) {
 	try {
 		const guild = await rest.get(
 			Routes.guild(process.env.GUILD_ID),
@@ -63,4 +68,9 @@ const ownerCommands = [];
 	} catch (error) {
 		console.error(error);
 	}
+}
+
+(async () => {
+	const ownerCommands = await regCommands();
+	await regPermissions(ownerCommands);
 })();
