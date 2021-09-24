@@ -1,17 +1,8 @@
 {
-    "id": 1,
     "name": "Default Template",
 	"roles": [
 		{
-            "name": "Líder",
-			"color": "#ff005a",
-            "permissions": "8",
-			"hoist": true,
-			"mentionable": false,
-			"gettable": false
-        },
-        {
-            "name": "Mods",
+            "name": "Mod",
 			"color": "#378bdb",
             "permissions": "8",
 			"hoist": true,
@@ -19,39 +10,7 @@
 			"gettable": false
         },
 		{
-            "name": "TempoJS",
-			"color": "#14e7d0",
-            "permissions": "0",
-			"hoist": true,
-			"mentionable": true,
-			"gettable": false
-        },
-		{
-            "name": "Botto",
-			"color": "#c480e9",
-            "permissions": "0",
-			"hoist": true,
-			"mentionable": true,
-			"gettable": false
-        },
-		{
-            "name": "Desenvolvimento",
-			"color": "#0c1a35",
-            "permissions": "0",
-			"hoist": false,
-			"mentionable": true,
-			"gettable": true
-        },
-		{
-            "name": "eSports",
-			"color": "#da3b3b",
-            "permissions": "0",
-			"hoist": false,
-			"mentionable": true,
-			"gettable": true
-        },
-		{
-            "name": "Membro",
+            "name": "Member",
 			"color": "#1e8f36",
             "permissions": "36611149377",
 			"hoist": true,
@@ -63,14 +22,14 @@
 			"permissions": "2147483648",
 			"gettable": false
 		}
-    ],
-    "channels": [
-        {
-            "name": "Informações!",
+	],
+	"channels": [
+		{
+            "name": "Info",
             "type": "GUILD_CATEGORY",
             "permissionOverwrites": [
 				{
-					"name": "Membro",
+					"name": "Member",
 					"allow": [],
 					"deny": ["SEND_MESSAGES"]
 				},
@@ -82,49 +41,17 @@
 			],
             "child": [
                 {
-                    "name": "boas-vindas🤗",
+                    "name": "welcome",
                     "type": "GUILD_TEXT",
 					"permissionOverwrites": []
                 },
                 {
-                    "name": "regras📚",
+                    "name": "rules",
                     "type": "GUILD_TEXT",
 					"permissionOverwrites": []
                 },
                 {
-                    "name": "projetos✅",
-                    "type": "GUILD_TEXT",
-					"permissionOverwrites": []
-                },
-                {
-                    "name": "faça-parte🖐",
-                    "type": "GUILD_TEXT",
-					"permissionOverwrites": [
-						{
-							"name": "@everyone",
-							"allow": ["VIEW_CHANNEL", "SEND_MESSAGES"],
-							"deny": []
-						}
-					]
-                },
-				{
-                    "name": "anúncios❕",
-                    "type": "GUILD_TEXT",
-					"permissionOverwrites": []
-                },
-				{
-                    "name": "dúvidas❔",
-                    "type": "GUILD_TEXT",
-					"permissionOverwrites": [
-						{
-							"name": "@everyone",
-							"allow": ["VIEW_CHANNEL", "SEND_MESSAGES"],
-							"deny": []
-						}
-					]
-                },
-				{
-                    "name": "parcerias😉",
+                    "name": "get-your-role",
                     "type": "GUILD_TEXT",
 					"permissionOverwrites": [
 						{
@@ -136,354 +63,67 @@
                 }
             ]
         },
-        {
-            "name": "Geral",
+		{
+            "name": "General",
             "type": "GUILD_CATEGORY",
 			"permissionOverwrites": [],
             "child": [
                 {
-                    "name": "bate-papo💬",
-                    "type": "GUILD_TEXT",
-					"permissionOverwrites": []
-                },
-                {
-                    "name": "feed-back👍",
-                    "type": "GUILD_TEXT",
-					"permissionOverwrites": []
-                },
-				{
-                    "name": "seu-ranking",
-                    "type": "GUILD_TEXT",
-					"permissionOverwrites": []
-                },
-                {
-                    "name": "bate-papo",
-                    "type": "GUILD_VOICE",
-					"permissionOverwrites": []
-                }
-            ]
-        },
-		{
-            "name": "Desenvolvimento",
-            "type": "GUILD_CATEGORY",
-			"permissionOverwrites": [
-				{
-					"name": "Desenvolvimento",
-					"allow": ["VIEW_CHANNEL"],
-					"deny": []
-				},
-				{
-					"name": "Membro",
-					"allow": [],
-					"deny": ["VIEW_CHANNEL"]
-				}
-			],
-            "child": [
-                {
-                    "name": "bate-papo💬",
-                    "type": "GUILD_TEXT",
-					"permissionOverwrites": []
-                },
-                {
-                    "name": "off-topic",
-                    "type": "GUILD_TEXT",
-					"permissionOverwrites": []
-                },
-                {
-                    "name": "game-dev",
-                    "type": "GUILD_TEXT",
-					"permissionOverwrites": []
-                },
-				{
-                    "name": "arte",
-                    "type": "GUILD_TEXT",
-					"permissionOverwrites": []
-                },
-				{
-                    "name": "áudio",
-                    "type": "GUILD_TEXT",
-					"permissionOverwrites": []
-                },
-                {
-                    "name": "salinha-do-café",
-                    "type": "GUILD_VOICE",
-					"permissionOverwrites": []
-                }
-            ]
-        },
-		{
-            "name": "eSports",
-            "type": "GUILD_CATEGORY",
-			"permissionOverwrites": [
-				{
-					"name": "eSports",
-					"allow": ["VIEW_CHANNEL"],
-					"deny": []
-				},
-				{
-					"name": "Membro",
-					"allow": [],
-					"deny": ["VIEW_CHANNEL"]
-				}
-			],
-            "child": [
-                {
-                    "name": "bate-papo💬",
-                    "type": "GUILD_TEXT",
-					"permissionOverwrites": []
-                },
-                {
-                    "name": "off-topic",
-                    "type": "GUILD_TEXT",
-					"permissionOverwrites": []
-                },
-                {
-                    "name": "league-of-legends",
-                    "type": "GUILD_TEXT",
-					"permissionOverwrites": []
-                },
-				{
-                    "name": "valorant",
-                    "type": "GUILD_TEXT",
-					"permissionOverwrites": []
-                },
-                {
-                    "name": "gameplay-diferenciada",
-                    "type": "GUILD_VOICE",
-					"permissionOverwrites": []
-                }
-            ]
-        },
-		{
-            "name": "TempoJS",
-            "type": "GUILD_CATEGORY",
-			"permissionOverwrites": [
-				{
-					"name": "TempoJS",
-					"allow": ["VIEW_CHANNEL", "SEND_MESSAGES", "MANAGE_CHANNELS"],
-					"deny": []
-				}
-			],
-            "child": [
-                {
-                    "name": "sobre",
-                    "type": "GUILD_TEXT",
-					"permissionOverwrites": [
-						{
-							"name": "TempoJS",
-							"allow": ["VIEW_CHANNEL", "SEND_MESSAGES", "MANAGE_CHANNELS"],
-							"deny": []
-						},
-						{
-							"name": "Membro",
-							"allow": [],
-							"deny": ["SEND_MESSAGES"]
-						}
-					]
-                },
-                {
-                    "name": "changelog",
-                    "type": "GUILD_TEXT",
-					"permissionOverwrites": [
-						{
-							"name": "TempoJS",
-							"allow": ["VIEW_CHANNEL", "SEND_MESSAGES", "MANAGE_CHANNELS"],
-							"deny": []
-						},
-						{
-							"name": "Membro",
-							"allow": [],
-							"deny": ["SEND_MESSAGES"]
-						}
-					]
-                },
-                {
                     "name": "chat",
                     "type": "GUILD_TEXT",
 					"permissionOverwrites": []
                 },
 				{
-                    "name": "team-chat",
-                    "type": "GUILD_TEXT",
-					"permissionOverwrites": [
-						{
-							"name": "TempoJS",
-							"allow": ["VIEW_CHANNEL", "SEND_MESSAGES", "MANAGE_CHANNELS"],
-							"deny": []
-						},
-						{
-							"name": "Membro",
-							"allow": [],
-							"deny": ["VIEW_CHANNEL"]
-						}
-					]
-                },
-				{
-                    "name": "issues",
-                    "type": "GUILD_TEXT",
-					"permissionOverwrites": [
-						{
-							"name": "TempoJS",
-							"allow": ["VIEW_CHANNEL", "SEND_MESSAGES", "MANAGE_CHANNELS"],
-							"deny": []
-						},
-						{
-							"name": "Membro",
-							"allow": [],
-							"deny": ["VIEW_CHANNEL"]
-						}
-					]
-                },
-                {
-                    "name": "reuniões",
-                    "type": "GUILD_VOICE",
-					"permissionOverwrites": [
-						{
-							"name": "TempoJS",
-							"allow": ["VIEW_CHANNEL", "SEND_MESSAGES", "MANAGE_CHANNELS"],
-							"deny": []
-						},
-						{
-							"name": "Membro",
-							"allow": [],
-							"deny": ["VIEW_CHANNEL"]
-						}
-					]
-                }
-            ]
-        },
-		{
-            "name": "Botto",
-            "type": "GUILD_CATEGORY",
-			"permissionOverwrites": [
-				{
-					"name": "Botto",
-					"allow": ["VIEW_CHANNEL", "SEND_MESSAGES", "MANAGE_CHANNELS"],
-					"deny": []
-				}
-			],
-            "child": [
-                {
-                    "name": "sobre",
-                    "type": "GUILD_TEXT",
-					"permissionOverwrites": [
-						{
-							"name": "Botto",
-							"allow": ["VIEW_CHANNEL", "SEND_MESSAGES", "MANAGE_CHANNELS"],
-							"deny": []
-						},
-						{
-							"name": "Membro",
-							"allow": [],
-							"deny": ["SEND_MESSAGES"]
-						}
-					]
-                },
-                {
-                    "name": "changelog",
-                    "type": "GUILD_TEXT",
-					"permissionOverwrites": [
-						{
-							"name": "Botto",
-							"allow": ["VIEW_CHANNEL", "SEND_MESSAGES", "MANAGE_CHANNELS"],
-							"deny": []
-						},
-						{
-							"name": "Membro",
-							"allow": [],
-							"deny": ["SEND_MESSAGES"]
-						}
-					]
-                },
-                {
-                    "name": "chat",
+                    "name": "random-stuff",
                     "type": "GUILD_TEXT",
 					"permissionOverwrites": []
                 },
 				{
-                    "name": "team-chat",
+                    "name": "feed-back",
                     "type": "GUILD_TEXT",
-					"permissionOverwrites": [
-						{
-							"name": "Botto",
-							"allow": ["VIEW_CHANNEL", "SEND_MESSAGES", "MANAGE_CHANNELS"],
-							"deny": []
-						},
-						{
-							"name": "Membro",
-							"allow": [],
-							"deny": ["VIEW_CHANNEL"]
-						}
-					]
-                },
-				{
-                    "name": "issues",
-                    "type": "GUILD_TEXT",
-					"permissionOverwrites": [
-						{
-							"name": "Botto",
-							"allow": ["VIEW_CHANNEL", "SEND_MESSAGES", "MANAGE_CHANNELS"],
-							"deny": []
-						},
-						{
-							"name": "Membro",
-							"allow": [],
-							"deny": ["VIEW_CHANNEL"]
-						}
-					]
+					"permissionOverwrites": []
                 },
                 {
-                    "name": "reuniões",
+                    "name": "voice-channel",
                     "type": "GUILD_VOICE",
-					"permissionOverwrites": [
-						{
-							"name": "Botto",
-							"allow": ["VIEW_CHANNEL", "SEND_MESSAGES", "MANAGE_CHANNELS"],
-							"deny": []
-						},
-						{
-							"name": "Membro",
-							"allow": [],
-							"deny": ["VIEW_CHANNEL"]
-						}
-					]
+					"permissionOverwrites": []
                 }
             ]
         },
-        {
-            "name": "Moderação",
+		{
+            "name": "Moderation",
             "type": "GUILD_CATEGORY",
 			"permissionOverwrites": [
 				{
-					"name": "Membro",
+					"name": "Member",
 					"allow": [],
 					"deny": ["VIEW_CHANNEL"]
 				}
 			],
             "child": [
                 {
-                    "name": "usuarios-entraram",
+                    "name": "users-joined",
                     "type": "GUILD_TEXT",
 					"permissionOverwrites": [],
 					"userJoinedChannel": true
                 },
                 {
-                    "name": "usuarios-sairam",
+                    "name": "users-left",
                     "type": "GUILD_TEXT",
 					"permissionOverwrites": [],
 					"userLeftChannel": true
                 },
                 {
-                    "name": "chat-moderadores",
+                    "name": "mods-chat",
                     "type": "GUILD_TEXT",
 					"permissionOverwrites": []
                 },
                 {
-                    "name": "sala-de-reuniões",
+                    "name": "meeting-room",
                     "type": "GUILD_VOICE",
 					"permissionOverwrites": []
                 }
             ]
         }
-    ]
+	]
 }
