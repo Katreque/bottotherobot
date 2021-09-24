@@ -30,9 +30,7 @@ describe('setChoicesArray', () => {
 
 	test('Should return the right object.', () => {
 		expect(getRole.setChoicesArray()).toEqual([
-			[ 'Desenvolvimento', 'Desenvolvimento' ],
-			[ 'eSports', 'eSports' ],
-			[ 'Membro', 'Membro' ]
+			[ 'Member', 'Member' ]
 		]);
 	});
 });
@@ -84,7 +82,7 @@ describe('execute', () => {
 			},
 			reply: jest.fn(),
 			options: {
-				getString: jest.fn().mockReturnValue('Membro')
+				getString: jest.fn().mockReturnValue('Member')
 			}
 		}
 
@@ -96,7 +94,7 @@ describe('execute', () => {
 		expect(interaction.member.roles.remove).toHaveBeenCalledTimes(1);
 
 		expect(interaction.reply).toHaveBeenCalledTimes(1);
-		expect(interaction.reply).toHaveBeenCalledWith({ content: `Role **Membro** was removed.`, ephemeral: true });
+		expect(interaction.reply).toHaveBeenCalledWith({ content: `Role **Member** was removed.`, ephemeral: true });
 	});
 
 	test('Should do the right function calls when the user doesnt have the role.', async () => {
@@ -120,7 +118,7 @@ describe('execute', () => {
 			},
 			reply: jest.fn(),
 			options: {
-				getString: jest.fn().mockReturnValue('Membro')
+				getString: jest.fn().mockReturnValue('Member')
 			}
 		}
 
@@ -132,7 +130,7 @@ describe('execute', () => {
 		expect(interaction.member.roles.add).toHaveBeenCalledTimes(1);
 
 		expect(interaction.reply).toHaveBeenCalledTimes(1);
-		expect(interaction.reply).toHaveBeenCalledWith({ content: `Role **Membro** was added.`, ephemeral: true });
+		expect(interaction.reply).toHaveBeenCalledWith({ content: `Role **Member** was added.`, ephemeral: true });
 	});
 
 	test('Should do the right function calls when the role doesnt exist.', async () => {
