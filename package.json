@@ -1,6 +1,6 @@
 {
 	"name": "bottotherobot",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"description": "",
 	"main": "src/index.js",
 	"jest": {
@@ -15,10 +15,18 @@
 	"scripts": {
 		"start": "node src/index.js",
 		"dev": "nodemon src/index.js",
+		"owner-commands": "node src/deploy-owner-commands.js",
+		"user-commands": "node src/deploy-user-commands.js",
+		"commands": "npm run owner-commands && npm run user-commands",
 		"test": "jest --collectCoverage --silent",
 		"lint": "eslint src",
 		"uglify": "uglifyjs-folder src -eo build",
 		"build": "npm run test && npm run lint && npm run uglify"
+	},
+	"nodemonConfig": {
+		"ignore": [
+			"config.json"
+		]
 	},
 	"repository": {
 		"type": "git",
@@ -31,7 +39,10 @@
 	},
 	"homepage": "https://github.com/Katreque/bottotherobot#readme",
 	"dependencies": {
-		"discord.js": "^12.5.1",
+		"@discordjs/builders": "^0.6.0",
+		"@discordjs/rest": "^0.1.0-canary.0",
+		"discord-api-types": "^0.22.0",
+		"discord.js": "^13.1.0",
 		"dotenv": "^8.2.0"
 	},
 	"devDependencies": {
